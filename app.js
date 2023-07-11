@@ -3,14 +3,13 @@ const bodyParser =require('body-parser');
 const date = require(__dirname + "/date.js")
 const { escapeXML } = require('ejs');
 const mongoose = require("mongoose");
-const _ = require("loadash")
 const app = express();
 app.set('view engine', 'ejs');
 
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/todoList');
+  await mongoose.connect('mongodb+srv://nareshmahesh910:Naresh%402001@cluster0.8atztpy.mongodb.net/todoList');
 }
 const itemSchema = {
    name : String
@@ -95,7 +94,7 @@ app.post('/',(req,res)=>{
 // })
 
 app.get("/:CustomList", (req, res) => {
-    const name = _.capitalize(req.params.CustomList);
+    const name = req.params.CustomList;
     
     List.findOne({ name: name })
       .then((list) => {
@@ -161,6 +160,6 @@ app.post("/delete" , (req,res) =>{
 app.get('/about', (req,res)=>{
     res.render("about")
 })
-app.listen(3000,()=>{
+app.listen( process.env.PORT || 5000,()=>{
     console.log("server is running on port 3000")
 })
