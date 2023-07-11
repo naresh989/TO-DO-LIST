@@ -6,11 +6,20 @@ const mongoose = require("mongoose");
 const app = express();
 app.set('view engine', 'ejs');
 
-main().catch(err => console.log(err));
+async function startServer() {
+  try {
+    await mongoose.connect('mongodb+srv://nareshmahesh910:Naresh%402001@cluster0.8atztpy.mongodb.net/todoList');
+    console.log('Database connected');
 
-async function main() {
-  await mongoose.connect('mongodb+srv://nareshmahesh910:Naresh%402001@cluster0.8atztpy.mongodb.net/todoList');
+    app.listen(process.env.PORT || 5000, () => {
+      console.log('Server is running on port 3000');
+    });
+  } catch (error) {
+    console.error('Error connecting to database:', error.message);
+  }
 }
+
+
 const itemSchema = {
    name : String
 }
@@ -160,6 +169,4 @@ app.post("/delete" , (req,res) =>{
 app.get('/about', (req,res)=>{
     res.render("about")
 })
-app.listen( process.env.PORT || 5000,()=>{
-    console.log("server is running on port 3000")
-})
+startServer();
